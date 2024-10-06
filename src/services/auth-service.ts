@@ -1,5 +1,5 @@
 import { prisma } from '../../prisma/index';
-import { UserValidation } from '../validations/auth-validation';
+import httpStatus from 'http-status';
 import { LoginRequest, RegisterRequest, Response } from '../models/auth-model';
 import { toUserResponse } from '../models/auth-model';
 import { apiError } from '../middlewares/ApiError';
@@ -14,7 +14,7 @@ export class AuthService {
 		});
 
 		if (usernameExist) {
-			throw new apiError(400, 'Username already exist');
+			throw new apiError(httpStatus.BAD_REQUEST, 'Username already exist');
 		}
 
 		request.password = await bcrypt.hash(request.password, 10);
@@ -34,7 +34,7 @@ export class AuthService {
 		});
 
 		if (!email) {
-			throw new apiError(401, 'Email or password wrong');
+			throw new apiError(httpStatus.BAD_REQUEST, 'Email or password wrong');
 		}
 
 		const isPasswordValid = await bcrypt.compare(
@@ -43,7 +43,7 @@ export class AuthService {
 		);
 
 		if (!isPasswordValid) {
-			throw new apiError(401, 'Email or password wrong');
+			throw new apiError(httpStatus.BAD_REQUEST, 'Email or password wrong');
 		}
 
 		return toUserResponse(email);
