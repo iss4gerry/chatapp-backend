@@ -21,4 +21,30 @@ model User {
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
   isEmailVerified Boolean      @default(false)
+  friends         Friend[]     @relation("UserFriends") 
+  friendsOf       Friend[]     @relation("FriendToUser") 
+  sentMessages    Message[]     @relation("SentMessages")
+  receivedMessages Message[]     @relation("ReceivedMessages")  
 }
+
+model Friend {
+  id              String       @id @default(uuid())
+  userId          String
+  user            User         @relation("UserFriends", fields: [userId], references: [id])
+  friendId        String
+  friend          User         @relation("FriendToUser", fields: [friendId], references: [id])
+  status          Boolean      @default(false)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model Message {
+  id              String       @id @default(uuid())
+  senderId        String
+  sender          User         @relation("SentMessages", fields: [senderId], references: [id])
+  receiverId      String
+  receiver        User         @relation("ReceivedMessages", fields: [receiverId], references: [id])
+}
+
+
+
