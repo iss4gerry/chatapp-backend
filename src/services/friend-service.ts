@@ -1,7 +1,7 @@
 import { http } from 'winston';
 import { prisma } from '../../prisma';
 import { apiError } from '../middlewares/ApiError';
-import { FriendRequest, Response } from '../models/friend-model';
+import { AccRequest, FriendRequest, Response } from '../models/friend-model';
 import httpStatus from 'http-status';
 
 export class FriendService {
@@ -21,6 +21,17 @@ export class FriendService {
 			data: {
 				userId: req.userId,
 				friendId: req.friendId,
+			},
+		});
+	};
+
+	static accept = async (req: AccRequest): Promise<Response> => {
+		return await prisma.friend.update({
+			where: {
+				id: req.id,
+			},
+			data: {
+				status: true,
 			},
 		});
 	};

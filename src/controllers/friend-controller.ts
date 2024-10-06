@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import httpStatus from 'http-status';
-import { FriendRequest } from '../models/friend-model';
+import { AccRequest, FriendRequest } from '../models/friend-model';
 import { FriendService } from '../services/friend-service';
 
 export class FriendController {
@@ -19,5 +19,18 @@ export class FriendController {
 		}
 	};
 
-	static accept = async (req: Request, res: Response, next: NextFunction) => {};
+	static accept = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const request: AccRequest = req.body as AccRequest;
+			const result = await FriendService.accept(request);
+
+			res.status(httpStatus.OK).json({
+				status: httpStatus.OK,
+				message: 'Accept friend success!',
+				data: result,
+			});
+		} catch (error) {
+			next(error);
+		}
+	};
 }

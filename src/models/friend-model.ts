@@ -11,3 +11,7 @@ export type Response = {
 	createdAt: Date;
 	updatedAt: Date;
 };
+
+export type AccRequest = {
+	id: string;
+};
