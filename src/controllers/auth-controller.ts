@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { AuthService } from '../services/auth-service.ts';
-import { RegisterRequest } from '../models/auth-model.ts';
+import { LoginRequest, RegisterRequest } from '../models/auth-model.ts';
 
 export class AuthController {
 	static register = async (req: Request, res: Response, next: NextFunction) => {
@@ -11,6 +11,21 @@ export class AuthController {
 			res.status(200).json({
 				status: 200,
 				message: 'Create user success!',
+				data: result,
+			});
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	static login = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const request: LoginRequest = req.body as LoginRequest;
+			const result = await AuthService.login(request);
+
+			res.status(200).json({
+				status: 200,
+				message: 'Login success!',
 				data: result,
 			});
 		} catch (error) {
