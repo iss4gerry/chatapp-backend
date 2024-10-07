@@ -14,39 +14,50 @@ datasource db {
 }
 
 model User {
-  id              String       @id @default(uuid())
-  username        String       @unique
+  id              String        @id @default(uuid())
+  username        String     @unique
   name            String
-  email           String       @unique
-  password        String    
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
-  isEmailVerified Boolean      @default(false)
-  friends         Friend[]     @relation("UserFriends") 
-  friendsOf       Friend[]     @relation("FriendToUser") 
-  sentMessages    Message[]     @relation("SentMessages")
-  receivedMessages Message[]     @relation("ReceivedMessages")  
+  email           String     @unique
+  password        String
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  isEmailVerified Boolean    @default(false)
+  friends         Friend[]   @relation("UserFriends")
+  friendsOf       Friend[]   @relation("FriendToUser")
+  roomsUser1      Room[]     @relation("User1Rooms")
+  roomsUser2      Room[]     @relation("User2Rooms")
+  messages        Message[]  @relation("SentMessages")
 }
 
 model Friend {
-  id              String       @id @default(uuid())
+  id              String        @id @default(uuid())
+  user            User       @relation("UserFriends", fields: [userId], references: [id])
   userId          String
-  user            User         @relation("UserFriends", fields: [userId], references: [id])
+  friend          User       @relation("FriendToUser", fields: [friendId], references: [id])
   friendId        String
-  friend          User         @relation("FriendToUser", fields: [friendId], references: [id])
-  status          Boolean      @default(false)
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  status          Boolean    @default(false) 
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model Room {
+  id          String        @id 
+  user1       User       @relation("User1Rooms", fields: [user1Id], references: [id])
+  user1Id     String
+  user2       User       @relation("User2Rooms", fields: [user2Id], references: [id])
+  user2Id     String
+  messages    Message[]
+  createdAt   DateTime   @default(now())
 }
 
 model Message {
-  id              String       @id @default(uuid())
-  senderId        String
-  sender          User         @relation("SentMessages", fields: [senderId], references: [id])
-  receiverId      String
-  receiver        User         @relation("ReceivedMessages", fields: [receiverId], references: [id])
-  createdAt       DateTime     @default(now())
+  id        String      @id @default(uuid())
+  room      Room       @relation(fields: [roomId], references: [id])
+  roomId    String
+  sender    User       @relation("SentMessages", fields: [senderId], references: [id])
+  senderId  String
+  content   String
+  createdAt DateTime   @default(now())
 }
-
 
 
