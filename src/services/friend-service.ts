@@ -26,7 +26,7 @@ export class FriendService {
 	};
 
 	static accept = async (req: AccRequest): Promise<Response> => {
-		return await prisma.friend.update({
+		const res = await prisma.friend.update({
 			where: {
 				id: req.id,
 			},
@@ -34,13 +34,22 @@ export class FriendService {
 				status: true,
 			},
 		});
+
+		await prisma.friend.create({
+			data: {
+				userId: res.friendId,
+				friendId: res.userId,
+				status: true,
+			},
+		});
+
+		return res;
 	};
 
 	static list = async (userId: string): Promise<any> => {
 		return await prisma.friend.findMany({
 			where: {
 				userId: userId,
-				status: true,
 			},
 			include: {
 				friend: {

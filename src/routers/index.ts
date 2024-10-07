@@ -1,6 +1,7 @@
 import express from 'express';
 import authRouter from './auth-route';
 import friendRoute from './friend-route';
+import messageRoute from './message-route';
 
 const router = express();
 
@@ -12,6 +13,10 @@ const defaultRoute = [
 	{
 		path: '/friend',
 		route: friendRoute,
+	},
+	{
+		path: '/message',
+		route: messageRoute,
 	},
 ];
 

@@ -4,6 +4,8 @@ import router from './routers';
 import cors from 'cors';
 import { Server } from 'socket.io';
 import { errorHandler } from './middlewares/error';
+import { MessagePayload } from './models/message-model';
+import { MessageService } from './services/message-service';
 
 const app = express();
 app.use(express.json());
@@ -32,13 +34,21 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-	console.log(socket.id);
+	console.log('user connected: ' + socket.id);
 
-	socket.on('chat message', (msg) => {
-		io.to('room1').emit('aa');
+	socket.on('joinRoom', (roomId: string) => {
+		socket.join(roomId);
+		console.log(`User ${socket.id} join to room: ${roomId}`);
+	});
+
+	socket.on('sendMessage', (payload: MessagePayload) => {
+		const { roomId, senderId, content } = payload;
+		// const message = await MessageService.saveMessage(payload);
+		io.to(roomId).emit('newMessage', payload);
+		console.log(`Pesan dikirim ke room ${roomId}:`, { content, senderId });
 	});
 
 	socket.on('disconnect', () => {
-		console.log('User disconnected');
+		console.log(`User disconnect: ${socket.id}`);
 	});
 });
