@@ -33,4 +33,19 @@ export class FriendController {
 			next(error);
 		}
 	};
+
+	static list = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const request = req.params.userId;
+			const result = await FriendService.list(request);
+
+			res.status(httpStatus.OK).json({
+				status: httpStatus.OK,
+				message: 'Get all friend success!',
+				data: result,
+			});
+		} catch (error) {
+			next(error);
+		}
+	};
 }

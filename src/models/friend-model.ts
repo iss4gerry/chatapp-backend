@@ -1,3 +1,6 @@
+import { Friend } from '@prisma/client';
+import e from 'express';
+
 export type FriendRequest = {
 	userId: string;
 	friendId: string;

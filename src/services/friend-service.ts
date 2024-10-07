@@ -35,4 +35,22 @@ export class FriendService {
 			},
 		});
 	};
+
+	static list = async (userId: string): Promise<any> => {
+		return await prisma.friend.findMany({
+			where: {
+				userId: userId,
+				status: true,
+			},
+			include: {
+				friend: {
+					select: {
+						name: true,
+						username: true,
+						id: true,
+					},
+				},
+			},
+		});
+	};
 }
