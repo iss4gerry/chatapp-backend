@@ -34,6 +34,21 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
+	const users: {
+		[key: string]: { online: boolean; lastOnline: string | null };
+	} = {};
+	const userId = socket.handshake.query.userId as string;
+
+	users[userId] = { online: true, lastOnline: null };
+	io.emit('userStatusUpdate', users);
+
+	socket.on('disconnect', () => {
+		console.log('A user disconnected:', userId);
+
+		users[userId].online = false;
+		users[userId].lastOnline = new Date().toISOString();
+		io.emit('userStatusUpdate', users);
+	});
 	socket.on('joinRoom', (roomId: string) => {
 		socket.join(roomId);
 		console.log(`User ${socket.id} join to room: ${roomId}`);
