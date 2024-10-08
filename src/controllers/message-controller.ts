@@ -33,4 +33,23 @@ export class MessageContoller {
 			next(error);
 		}
 	};
+
+	static getAllMessage = async (
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) => {
+		try {
+			const request: GetRoom = req.params as GetRoom;
+			const result = await MessageService.getAllMessage(request);
+
+			res.status(httpStatus.OK).json({
+				status: httpStatus.OK,
+				message: 'Get message success!',
+				data: result,
+			});
+		} catch (error) {
+			next(error);
+		}
+	};
 }

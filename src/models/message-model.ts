@@ -3,6 +3,7 @@ export interface MessagePayload {
 	senderId: string;
 	receiverId: string;
 	content: string;
+	dateTime: string;
 }
 
 export type RoomPayload = {

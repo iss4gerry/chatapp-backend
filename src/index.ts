@@ -34,18 +34,16 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-	console.log('user connected: ' + socket.id);
-
 	socket.on('joinRoom', (roomId: string) => {
 		socket.join(roomId);
 		console.log(`User ${socket.id} join to room: ${roomId}`);
 	});
 
-	socket.on('sendMessage', (payload: MessagePayload) => {
-		const { roomId, senderId, content } = payload;
-		// const message = await MessageService.saveMessage(payload);
+	socket.on('sendMessage', async (payload: MessagePayload) => {
+		const { roomId } = payload;
+		await MessageService.saveMessage(payload);
+
 		io.to(roomId).emit('newMessage', payload);
-		console.log(`Pesan dikirim ke room ${roomId}:`, { content, senderId });
 	});
 
 	socket.on('disconnect', () => {

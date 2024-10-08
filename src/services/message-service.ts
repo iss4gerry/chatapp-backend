@@ -15,6 +15,7 @@ export class MessageService {
 				roomId: payload.roomId,
 				senderId: payload.senderId,
 				content: payload.content,
+				createdAt: payload.dateTime,
 			},
 		});
 	};
@@ -50,5 +51,19 @@ export class MessageService {
 				id: request.roomId,
 			},
 		});
+	};
+
+	static getAllMessage = async (request: GetRoom) => {
+		const a = prisma.message.findMany({
+			where: {
+				roomId: request.roomId,
+			},
+			orderBy: {
+				createdAt: 'asc',
+			},
+		});
+
+		console.log(a);
+		return a;
 	};
 }
