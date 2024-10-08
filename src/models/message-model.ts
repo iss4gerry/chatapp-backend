@@ -11,6 +11,10 @@ export type RoomPayload = {
 	user2Id: string;
 };
 
+export type GetRoom = {
+	roomId: string;
+};
+
 export type RoomResponse = {
 	id: string;
 	user1Id: string;

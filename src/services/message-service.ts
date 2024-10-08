@@ -2,6 +2,7 @@ import httpStatus from 'http-status';
 import { prisma } from '../../prisma';
 import { apiError } from '../middlewares/ApiError';
 import {
+	GetRoom,
 	MessagePayload,
 	RoomPayload,
 	RoomResponse,
@@ -41,5 +42,13 @@ export class MessageService {
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	static getRoom = async (request: GetRoom) => {
+		return await prisma.room.findFirst({
+			where: {
+				id: request.roomId,
+			},
+		});
 	};
 }
