@@ -63,7 +63,6 @@ export class MessageService {
 			},
 		});
 
-		console.log(a);
 		return a;
 	};
 }

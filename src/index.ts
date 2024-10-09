@@ -52,6 +52,8 @@ io.on('connection', (socket) => {
 	socket.on('joinRoom', (roomId: string) => {
 		socket.join(roomId);
 		console.log(`User ${socket.id} join to room: ${roomId}`);
+		users[userId] = { online: true, lastOnline: null };
+		io.emit('userStatusUpdate', users);
 	});
 
 	socket.on('sendMessage', async (payload: MessagePayload) => {
