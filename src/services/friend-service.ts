@@ -1,8 +1,14 @@
 import { http } from 'winston';
 import { prisma } from '../../prisma';
 import { apiError } from '../middlewares/ApiError';
-import { AccRequest, FriendRequest, Response } from '../models/friend-model';
+import {
+	AccRequest,
+	FriendRequest,
+	Response,
+	SearchFriend,
+} from '../models/friend-model';
 import httpStatus from 'http-status';
+import { toUserResponse } from '../models/auth-model';
 
 export class FriendService {
 	static add = async (req: FriendRequest): Promise<Response> => {
@@ -59,7 +65,31 @@ export class FriendService {
 						id: true,
 					},
 				},
+				user: {
+					select: {
+						name: true,
+						username: true,
+					},
+				},
 			},
 		});
+	};
+
+	static searchFriend = async (
+		username: string
+	): Promise<SearchFriend | null | undefined> => {
+		try {
+			const res = await prisma.user.findFirst({
+				where: {
+					username: username,
+				},
+			});
+			if (!res) {
+				return null;
+			}
+			return toUserResponse(res!);
+		} catch (error) {
+			return null;
+		}
 	};
 }

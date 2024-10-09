@@ -48,4 +48,23 @@ export class FriendController {
 			next(error);
 		}
 	};
+
+	static searchFriend = async (
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) => {
+		try {
+			const request = req.params.userId;
+			const result = await FriendService.searchFriend(request);
+
+			res.status(httpStatus.OK).json({
+				status: httpStatus.OK,
+				message: 'Search friend success!',
+				data: result,
+			});
+		} catch (error) {
+			next(error);
+		}
+	};
 }
