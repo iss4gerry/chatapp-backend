@@ -56,6 +56,7 @@ export class FriendService {
 		return await prisma.friend.findMany({
 			where: {
 				userId: userId,
+				status: true,
 			},
 			include: {
 				friend: {
@@ -91,5 +92,29 @@ export class FriendService {
 		} catch (error) {
 			return null;
 		}
+	};
+
+	static pendingRequest = async (userId: string): Promise<any> => {
+		return await prisma.friend.findMany({
+			where: {
+				userId: userId,
+				status: false,
+			},
+			include: {
+				friend: {
+					select: {
+						name: true,
+						username: true,
+						id: true,
+					},
+				},
+				user: {
+					select: {
+						name: true,
+						username: true,
+					},
+				},
+			},
+		});
 	};
 }

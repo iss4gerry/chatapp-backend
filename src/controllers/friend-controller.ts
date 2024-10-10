@@ -67,4 +67,23 @@ export class FriendController {
 			next(error);
 		}
 	};
+
+	static pendingRequest = async (
+		req: Request,
+		res: Response,
+		next: NextFunction
+	) => {
+		try {
+			const request = req.params.userId;
+			const result = await FriendService.pendingRequest(request);
+
+			res.status(httpStatus.OK).json({
+				status: httpStatus.OK,
+				message: 'Get pending request success!',
+				data: result,
+			});
+		} catch (error) {
+			next(error);
+		}
+	};
 }
