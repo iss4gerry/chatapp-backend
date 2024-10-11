@@ -28,7 +28,7 @@ export class AuthService {
 		return toUserResponse(user);
 	}
 
-	static async login(request: LoginRequest, res: Res): Promise<Response> {
+	static async login(request: LoginRequest): Promise<Response> {
 		const email = await prisma.user.findUnique({
 			where: {
 				email: request.email,
@@ -48,11 +48,6 @@ export class AuthService {
 			throw new apiError(httpStatus.BAD_REQUEST, 'Email or password wrong');
 		}
 
-		const token = generateToken(email)
-		res.setHeader('Authorization', `Bearer ${token}`);
-		res.header('Access-Control-Allow-Origin', '*');
-		res.header('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-		res.header('Access-Control-Expose-Headers', 'Authorization');
 		return toUserResponse(email);
 	}
 }
