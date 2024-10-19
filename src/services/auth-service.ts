@@ -1,53 +1,53 @@
-import { prisma } from '../../prisma/index';
-import { Response as Res } from 'express';
-import httpStatus from 'http-status';
-import { LoginRequest, RegisterRequest, Response } from '../models/auth-model';
-import { toUserResponse } from '../models/auth-model';
-import { apiError } from '../middlewares/ApiError';
-import bcrypt from 'bcrypt';
-import { generateToken } from './token-service';
+import { prisma } from "../../prisma/index";
+import { Response as Res } from "express";
+import httpStatus from "http-status";
+import { LoginRequest, RegisterRequest, Response } from "../models/auth-model";
+import { toUserResponse } from "../models/auth-model";
+import { apiError } from "../middlewares/ApiError";
+import bcrypt from "bcrypt";
+import { generateToken } from "./token-service";
 
 export class AuthService {
-	static async register(request: RegisterRequest): Promise<Response> {
-		const usernameExist = await prisma.user.count({
-			where: {
-				email: request.email,
-			},
-		});
+  static async register(request: RegisterRequest): Promise<Response> {
+    const usernameExist = await prisma.user.count({
+      where: {
+        email: request.email,
+      },
+    });
 
-		if (usernameExist) {
-			throw new apiError(httpStatus.BAD_REQUEST, 'Username already exist');
-		}
+    if (usernameExist) {
+      throw new apiError(httpStatus.BAD_REQUEST, "Username already exist");
+    }
 
-		request.password = await bcrypt.hash(request.password, 10);
+    request.password = await bcrypt.hash(request.password, 10);
 
-		const user = await prisma.user.create({
-			data: request,
-		});
+    const user = await prisma.user.create({
+      data: request,
+    });
 
-		return toUserResponse(user);
-	}
+    return toUserResponse(user);
+  }
 
-	static async login(request: LoginRequest): Promise<Response> {
-		const email = await prisma.user.findUnique({
-			where: {
-				email: request.email,
-			},
-		});
+  static async login(request: LoginRequest): Promise<Response> {
+    const email = await prisma.user.findUnique({
+      where: {
+        email: request.email,
+      },
+    });
 
-		if (!email) {
-			throw new apiError(httpStatus.BAD_REQUEST, 'Email or password wrong');
-		}
+    if (!email) {
+      throw new apiError(httpStatus.BAD_REQUEST, "Email or password wrong");
+    }
 
-		const isPasswordValid = await bcrypt.compare(
-			request.password,
-			email.password
-		);
+    const isPasswordValid = await bcrypt.compare(
+      request.password,
+      email.password
+    );
 
-		if (!isPasswordValid) {
-			throw new apiError(httpStatus.BAD_REQUEST, 'Email or password wrong');
-		}
+    if (!isPasswordValid) {
+      throw new apiError(httpStatus.BAD_REQUEST, "Email or password wrong");
+    }
 
-		return toUserResponse(email);
-	}
+    return toUserResponse(email);
+  }
 }
