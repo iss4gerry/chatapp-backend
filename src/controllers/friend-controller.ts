@@ -86,4 +86,19 @@ export class FriendController {
 			next(error);
 		}
 	};
+
+	static userInfo = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const request = req.params.userId;
+			const result = await FriendService.userInfo(request);
+
+			res.status(httpStatus.OK).json({
+				status: httpStatus.OK,
+				message: 'Get user info success!',
+				data: result,
+			});
+		} catch (error) {
+			next(error);
+		}
+	};
 }

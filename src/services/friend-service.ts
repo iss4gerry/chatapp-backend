@@ -8,7 +8,7 @@ import {
 	SearchFriend,
 } from '../models/friend-model';
 import httpStatus from 'http-status';
-import { toUserResponse } from '../models/auth-model';
+import { toUserResponse, Response as UserInfo } from '../models/auth-model';
 
 export class FriendService {
 	static add = async (req: FriendRequest): Promise<Response> => {
@@ -97,7 +97,7 @@ export class FriendService {
 	static pendingRequest = async (userId: string): Promise<any> => {
 		return await prisma.friend.findMany({
 			where: {
-				userId: userId,
+				friendId: userId,
 				status: false,
 			},
 			include: {
@@ -116,5 +116,19 @@ export class FriendService {
 				},
 			},
 		});
+	};
+
+	static userInfo = async (userId: string): Promise<UserInfo> => {
+		const res = await prisma.user.findFirst({
+			where: {
+				id: userId,
+			},
+		});
+
+		if (res) {
+			return toUserResponse(res);
+		} else {
+			throw new apiError(httpStatus.BAD_REQUEST, 'User not found');
+		}
 	};
 }

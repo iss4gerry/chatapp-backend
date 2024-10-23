@@ -21,7 +21,6 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use(router);
-app.use(errorHandler);
 
 const server = app.listen(3000, () => {
 	console.log('Server is running on port 3000');
@@ -67,3 +66,5 @@ io.on('connection', (socket) => {
 		console.log(`User disconnect: ${socket.id}`);
 	});
 });
+
+app.use(errorHandler);
