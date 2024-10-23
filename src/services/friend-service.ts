@@ -62,12 +62,14 @@ export class FriendService {
 				friend: {
 					select: {
 						name: true,
+						avatar: true,
 						username: true,
 						id: true,
 					},
 				},
 				user: {
 					select: {
+						avatar: true,
 						name: true,
 						username: true,
 					},
@@ -104,12 +106,14 @@ export class FriendService {
 				friend: {
 					select: {
 						name: true,
+						avatar: true,
 						username: true,
 						id: true,
 					},
 				},
 				user: {
 					select: {
+						avatar: true,
 						name: true,
 						username: true,
 					},

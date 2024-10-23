@@ -20,6 +20,7 @@ export type AccRequest = {
 
 export type SearchFriend = {
 	id: string;
+	avatar: number;
 	username: string;
 	name: string;
 	email: string;
@@ -28,6 +29,7 @@ export type SearchFriend = {
 export function toUserResponse(user: User): SearchFriend {
 	return {
 		id: user.id,
+		avatar: user.avatar,
 		name: user.name,
 		username: user.username,
 		email: user.email!,
