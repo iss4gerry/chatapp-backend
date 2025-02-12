@@ -1,6 +1,7 @@
 import { User } from '@prisma/client';
 
 export type RegisterRequest = {
+	avatar: number;
 	email: string;
 	username: string;
 	name: string;

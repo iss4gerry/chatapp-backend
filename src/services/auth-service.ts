@@ -1,11 +1,9 @@
 import { prisma } from '../../prisma/index';
-import { Response as Res } from 'express';
 import httpStatus from 'http-status';
 import { LoginRequest, RegisterRequest, Response } from '../models/auth-model';
 import { toUserResponse } from '../models/auth-model';
 import { apiError } from '../middlewares/ApiError';
 import bcrypt from 'bcrypt';
-import { generateToken } from './token-service';
 
 export class AuthService {
 	static async register(request: RegisterRequest): Promise<Response> {
