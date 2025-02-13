@@ -1,7 +1,9 @@
 import type { Request, Response } from 'express';
+import axios, { AxiosError } from 'axios';
 import express from 'express';
 import router from './routers';
 import cors from 'cors';
+import helmet from 'helmet';
 import { Server } from 'socket.io';
 import { errorHandler } from './middlewares/error';
 import { MessagePayload } from './models/message-model';
@@ -16,8 +18,26 @@ app.use(
 	})
 );
 
+app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
+
 app.get('/', (req: Request, res: Response) => {
 	res.send('Hello World');
+});
+
+app.get('/avatar/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+		const response = await axios.get(`https://api.multiavatar.com/${id}.svg`, {
+			headers: {
+				'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', // Simulasi request dari browser
+			},
+		});
+		res.setHeader('Content-Type', 'image/svg+xml');
+		res.send(response.data);
+	} catch (error) {
+		console.error('Error fetching avatar:', error.message);
+		res.status(500).json({ error: 'Failed to fetch avatar' });
+	}
 });
 
 app.use(router);
