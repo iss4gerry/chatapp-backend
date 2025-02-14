@@ -1,0 +1,1 @@
+{"version":3,"file":"auth-model.js","sourceRoot":"","sources":["../../../src/models/auth-model.ts"],"names":[],"mappings":";;AAuBA,wCAQC;AARD,SAAgB,cAAc,CAAC,IAAU;IACxC,OAAO;QACN,EAAE,EAAE,IAAI,CAAC,EAAE;QACX,MAAM,EAAE,IAAI,CAAC,MAAM;QACnB,IAAI,EAAE,IAAI,CAAC,IAAI;QACf,QAAQ,EAAE,IAAI,CAAC,QAAQ;QACvB,KAAK,EAAE,IAAI,CAAC,KAAM;KAClB,CAAC;AACH,CAAC"}
