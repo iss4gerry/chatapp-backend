@@ -4,7 +4,7 @@
 		{
 			"src": "dist/index.js",
 			"use": "@vercel/node",
-			"config": { "includeFiles": ["dist/**"] }
+			"config": { "supportsEsModules": true, "includeFiles": ["dist/**"] }
 		}
 	],
 	"routes": [
