@@ -1,5 +1,5 @@
 import express from 'express';
-import { FriendController } from '../controllers/friend-controller';
+import { FriendController } from '../controllers/friend-controller.js';
 const router = express.Router();
 
 router.route('/add').post(FriendController.add);

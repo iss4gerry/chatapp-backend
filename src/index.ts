@@ -1,7 +1,6 @@
 import type { Request, Response } from 'express';
-import axios, { AxiosError } from 'axios';
 import express from 'express';
-import router from './routers';
+import router from './routers/index';
 import cors from 'cors';
 import helmet from 'helmet';
 import { Server } from 'socket.io';
@@ -26,7 +25,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use(router);
 
-const server = app.listen(8080, () => {
+const server = app.listen(8090, () => {
 	console.log('Server is running on port 8080');
 });
 
