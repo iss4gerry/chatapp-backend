@@ -2,6 +2,9 @@
 	"version": 2,
 	"builds": [
 		{
+			"env": {
+				"BUN_RUNTIME": "true"
+			},
 			"src": "/src/index.ts",
 			"use": "@vercel/node"
 		}
