@@ -32,7 +32,7 @@ This is a backend server for a real-time chat application built using **Express.
    ```sh
    npm install
    ```
-
+ 
 3. Set up the environment variables:
 
    Create a `.env` file and add:
